@@ -93,6 +93,23 @@ describe("atomic", () => {
     );
   });
 
+  it("handles responsive variants with multiple classes correctly", () => {
+    const variants = atomic({
+      base: "w-20 h-20",
+      variants: {
+        padding: {
+          small: "px-1 py-1",
+          large: "px-2 py-2",
+        },
+      },
+      responsiveVariants: true,
+    });
+
+    expect(variants({ padding: { xs: "small", md: "large" } })).toBe(
+      "w-20 h-20 px-1 py-1 md:px-2 md:py-2"
+    );
+  });
+
   it("handles responsive variants with specific keys", () => {
     const variants = atomic({
       base: "w-20 h-20",
