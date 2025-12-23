@@ -6,14 +6,15 @@
   "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
   "workspaces": {
     "packages": [
-      "packages/*",
-      "examples/*"
+      "examples/*",
+      "packages/*"
     ],
     "catalog": {
       "next": "16.0.10"
     }
   },
   "scripts": {
+    "build": "nx run-many --target=build",
     "postinstall": "bun fix-comma-lock",
     "prepare": "husky",
     "sort-package": "bunx sort-package-json 'package.json' 'packages/*/package.json'"
@@ -22,6 +23,7 @@
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@commitlint/types": "^20.2.0",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "nx": "^22.3.3"
   }
 }

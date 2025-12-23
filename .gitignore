@@ -39,3 +39,8 @@ target
 *.wasm
 
 .atomic-variants
+
+
+
+.nx/cache
+.nx/workspace-data
