@@ -1,12 +1,8 @@
 import { transform } from "@swc/core";
 import fs from "fs";
 import type { Plugin } from "vite";
-import {
-  OUTPUT_DIR,
-  OUTPUT_FILE_DIR,
-  ATOMIC_REGEX,
-  ATOMIC_TAG,
-} from "@atomic-variants/constants";
+import { ATOMIC_REGEX, ATOMIC_TAG } from "@atomic-variants/constants";
+import path from "path";
 
 export default function atomicVariants(): Plugin {
   const extracted = new Set<string>();
@@ -57,7 +53,9 @@ export default function atomicVariants(): Plugin {
 
 const writeExtractedClasses = (extracted: Set<string>) => {
   if (extracted.size > 0) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    fs.writeFileSync(OUTPUT_FILE_DIR, Array.from(extracted).join("\n"), "utf8");
+    fs.writeFileSync(
+      path.resolve(import.meta.dirname, "../atomic-variants.css"),
+      `@source inline("${Array.from(extracted).join(" ")}");`
+    );
   }
 };

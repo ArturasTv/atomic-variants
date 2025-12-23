@@ -1,2 +1,3 @@
 git update-index --assume-unchanged packages/next-plugin/atomic-variants.css
+git update-index --assume-unchanged packages/vite-plugin/atomic-variants.css
 bun test

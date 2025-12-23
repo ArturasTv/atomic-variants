@@ -25,6 +25,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "style": "./atomic-variants.css",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
@@ -35,7 +36,8 @@
   "types": "./dist/index.d.ts",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "atomic-variants.css"
   ],
   "scripts": {
     "build": "tsdown src/index.ts",
