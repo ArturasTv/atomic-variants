@@ -9,7 +9,7 @@ export function withAtomicVariants(nextConfig: NextConfig) {
     webpack: (webpackConfig, options) => {
       webpackConfig.plugins?.push(
         new AtomicVariantsPlugin({
-          filePath: path.resolve(__dirname, "atomic-variants.css"),
+          filePath: path.resolve(__dirname, "../atomic-variants.css"),
         })
       );
 

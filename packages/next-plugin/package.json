@@ -25,9 +25,9 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "style": "./atomic-variants.css",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "style": "./atomic-variants.css"
+      "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json"
   },
