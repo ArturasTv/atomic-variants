@@ -54,7 +54,7 @@
     "@types/jest": "^30.0.0",
     "tsdown": "^0.15.7",
     "typescript": "^5",
-    "vite": "^7.1.10"
+    "vite": "catalog:"
   },
   "publishConfig": {
     "access": "public"

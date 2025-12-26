@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "atomic-variants";
+@import "@atomic-variants/next-plugin";
 
 :root {
   --background: #ffffff;
