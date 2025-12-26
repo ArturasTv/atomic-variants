@@ -3,13 +3,20 @@ import fs from "fs";
 import type { Plugin } from "vite";
 import { ATOMIC_REGEX, ATOMIC_TAG } from "@atomic-variants/constants";
 import path from "path";
+import { fileURLToPath } from "url";
+import { createRequire } from "module";
+
+const resolve = createRequire(import.meta.url).resolve;
 
 export default function atomicVariants(): Plugin {
   const extracted = new Set<string>();
+  let viteCacheRoot: string;
 
   return {
     name: "vite-plugin",
-
+    configResolved(config) {
+      viteCacheRoot = config.cacheDir;
+    },
     async transform(code, id) {
       if (!/\.(t|j)sx?$/.test(id)) return null;
 
@@ -28,7 +35,10 @@ export default function atomicVariants(): Plugin {
           },
           target: "es2022",
           experimental: {
-            plugins: [["@atomic-variants/swc-plugin", { tag: ATOMIC_TAG }]],
+            plugins: [
+              [resolve("@atomic-variants/swc-plugin"), { tag: ATOMIC_TAG }],
+            ],
+            cacheRoot: path.join(viteCacheRoot ?? "node_modules/.vite", ".swc"),
           },
         },
       });
@@ -53,8 +63,9 @@ export default function atomicVariants(): Plugin {
 
 const writeExtractedClasses = (extracted: Set<string>) => {
   if (extracted.size > 0) {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
     fs.writeFileSync(
-      path.resolve(import.meta.dirname, "../atomic-variants.css"),
+      path.resolve(__dirname, "../atomic-variants.css"),
       `@source inline("${Array.from(extracted).join(" ")}");`
     );
   }
