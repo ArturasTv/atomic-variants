@@ -69,14 +69,12 @@ Add the generated `.atomic-variants` folder to your `.gitignore` to prevent it f
 .atomic-variants
 ```
 
-Finally, make Tailwind aware of the generated classes by importing the folder in your **global.css**.
+Finally, import _@atomic-variants/vite-plugin_ in the same CSS file where **Tailwind** is imported.
 
 ```css
 @import "tailwindcss";
-@source "../atomic-variants";
+@import "@atomic-variants/next-plugin";
 ```
-
-This tells Tailwind to **scan** the generated variant files for class names during compilation, so those classes are recognized and compiled into your CSS.
 
 </details>
 
@@ -109,20 +107,12 @@ export default defineConfig({
 });
 ```
 
-Add the generated `.atomic-variants` folder to your `.gitignore` to prevent it from being committed.
-
-```txt
-.atomic-variants
-```
-
-Finally, make Tailwind aware of the generated classes by importing the folder in your **global.css**.
+Finally, import _@atomic-variants/vite-plugin_ in the same CSS file where **Tailwind** is imported.
 
 ```css
 @import "tailwindcss";
-@source "../atomic-variants";
+@import "@atomic-variants/vite-plugin";
 ```
-
-This tells Tailwind to **scan** the generated variant files for class names during compilation, so those classes are recognized and compiled into your CSS.
 
 </details>
 
