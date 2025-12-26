@@ -1,6 +1,7 @@
 import fs from "fs";
 import atomicVariantsPlugin from "../src";
 import { ATOMIC_TAG } from "@atomic-variants/constants";
+import path from "path";
 
 describe("atomicVariantsPlugin (Vite)", () => {
   let plugin: ReturnType<typeof atomicVariantsPlugin>;
@@ -28,7 +29,10 @@ describe("atomicVariantsPlugin (Vite)", () => {
     // Trigger buildEnd() hook to write file
     buildEndFn();
 
-    const contents = fs.readFileSync("atomic-variants.css", "utf8");
+    const contents = fs.readFileSync(
+      path.resolve(__dirname, "../atomic-variants.css"),
+      "utf8"
+    );
     expect(contents.trim()).toContain(`@source inline("text-blue-500")`);
   });
 });
