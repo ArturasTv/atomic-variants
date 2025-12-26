@@ -40,10 +40,14 @@ jobs:
       - name: Set dynamic matrix
         id: set-matrix
         run: |
-          paths="${{ needs.release-please.outputs.paths_released }}"
-          # Convert to JSON array of package names
-          packages=$(echo "$paths" | grep -oE 'packages/[^/]+' | sort -u | sed 's/packages\///g' | paste -sd ',' -)
-          echo "matrix=[${packages//,/\",\"}]" | sed 's/\[/["/; s/\]/"]/;' >> $GITHUB_OUTPUT
+          paths='${{ needs.release-please.outputs.paths_released }}'
+          packages=$(echo "$paths" \
+            | jq -r '.[]' \
+            | grep '^packages/' \
+            | sed 's|packages/||' \
+            | sort -u)
+          matrix=$(printf '%s\n' "$packages" | jq -R . | jq -s .)
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   publish:
     name: Publish
