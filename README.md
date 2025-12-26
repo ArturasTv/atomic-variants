@@ -63,12 +63,6 @@ const nextConfig: NextConfig = {
 export default withAtomicVariants(nextConfig); // Wrap your config with the plugin
 ```
 
-Add the generated `.atomic-variants` folder to your `.gitignore` to prevent it from being committed.
-
-```txt
-.atomic-variants
-```
-
 Finally, import _@atomic-variants/vite-plugin_ in the same CSS file where **Tailwind** is imported.
 
 ```css
