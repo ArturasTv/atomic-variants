@@ -1,7 +1,6 @@
 import { ATOMIC_TAG } from "@atomic-variants/constants";
 import AtomicVariantsPlugin from "@atomic-variants/webpack-plugin";
 import type { NextConfig } from "next";
-import path from "path";
 
 export function withAtomicVariants(nextConfig: NextConfig) {
   return {
@@ -9,7 +8,7 @@ export function withAtomicVariants(nextConfig: NextConfig) {
     webpack: (webpackConfig, options) => {
       webpackConfig.plugins?.push(
         new AtomicVariantsPlugin({
-          filePath: path.resolve(__dirname, "../atomic-variants.css"),
+          filePath: new URL("../atomic-variants.css", import.meta.url).pathname,
         })
       );
 
