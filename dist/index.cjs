@@ -1,1 +1,76 @@
-var e=Object.create,t=Object.defineProperty,n=Object.getOwnPropertyDescriptor,r=Object.getOwnPropertyNames,i=Object.getPrototypeOf,a=Object.prototype.hasOwnProperty,o=(e,i,o,s)=>{if(i&&typeof i==`object`||typeof i==`function`)for(var c=r(i),l=0,u=c.length,d;l<u;l++)d=c[l],!a.call(e,d)&&d!==o&&t(e,d,{get:(e=>i[e]).bind(null,d),enumerable:!(s=n(i,d))||s.enumerable});return e},s=(n,r,a)=>(a=n==null?{}:e(i(n)),o(r||!n||!n.__esModule?t(a,`default`,{value:n,enumerable:!0}):a,n));let c=require(`@swc/core`);c=s(c);let l=require(`fs`);l=s(l);let u=require(`path`);u=s(u);let d=require(`url`);d=s(d);let f=require(`module`);f=s(f);const p=`__atomic_generated`,m=RegExp(`/\\*\\s*${p}:([^*]+)\\s*\\*/`,`g`),h=(0,f.createRequire)(require(`url`).pathToFileURL(__filename).href).resolve;function g(){let e=new Set,t;return{name:`vite-plugin`,configResolved(e){t=e.cacheDir},async transform(n,r){if(!/\.(t|j)sx?$/.test(r))return null;let i=r.endsWith(`.ts`)||r.endsWith(`.tsx`),a=r.endsWith(`.tsx`),o=await(0,c.transform)(n,{filename:r,swcrc:!1,sourceMaps:!1,configFile:!1,jsc:{parser:{syntax:i?`typescript`:`ecmascript`,tsx:a},target:`es2022`,experimental:{plugins:[[h(`@atomic-variants/swc-plugin`),{tag:p}]],cacheRoot:u.default.join(t??`node_modules/.vite`,`.swc`)}}});m.lastIndex=0;let s=m.exec(o.code);return s&&(e.add((s?.[1]||``).trim()),_(e)),{code:o.code,map:o.map}},buildEnd(){_(e)}}}const _=e=>{if(e.size>0){let t=u.default.dirname((0,d.fileURLToPath)(require(`url`).pathToFileURL(__filename).href));l.default.writeFileSync(u.default.resolve(t,`../atomic-variants.css`),`@source inline("${Array.from(e).join(` `)}");`)}};module.exports=g;
+"use strict";
+
+const { transform } = require("@swc/core");
+const fs = require("fs");
+const path = require("path");
+const { fileURLToPath, pathToFileURL } = require("url");
+
+const ATOMIC_TAG = "__atomic_generated";
+const ATOMIC_REGEX = new RegExp(`/\\*\\s*${ATOMIC_TAG}:([^*]+)\\s*\\*/`, "g");
+
+function atomicVariants() {
+  const extracted = new Set();
+  let viteCacheRoot;
+
+  return {
+    name: "vite-plugin",
+    configResolved(config) {
+      viteCacheRoot = config.cacheDir;
+    },
+    async transform(code, id) {
+      if (!/\.(t|j)sx?$/.test(id)) return null;
+
+      const isTS = id.endsWith(".ts") || id.endsWith(".tsx");
+      const isTSX = id.endsWith(".tsx");
+      const currentDir = path.dirname(__filename);
+
+      const result = await transform(code, {
+        filename: id,
+        swcrc: false,
+        sourceMaps: false,
+        configFile: false,
+        jsc: {
+          parser: {
+            syntax: isTS ? "typescript" : "ecmascript",
+            tsx: isTSX,
+          },
+          target: "es2022",
+          experimental: {
+            plugins: [
+              [path.join(currentDir, "../swc-plugin/swc_plugin_atomic_variants.wasm"), { tag: ATOMIC_TAG }],
+            ],
+            cacheRoot: path.join(viteCacheRoot ?? "node_modules/.vite", ".swc"),
+          },
+        },
+      });
+
+      ATOMIC_REGEX.lastIndex = 0;
+      const match = ATOMIC_REGEX.exec(result.code);
+      if (match) {
+        extracted.add((match?.[1] || "").trim());
+        writeExtractedClasses(extracted);
+      }
+
+      return {
+        code: result.code,
+        map: result.map,
+      };
+    },
+
+    buildEnd() {
+      writeExtractedClasses(extracted);
+    },
+  };
+}
+
+function writeExtractedClasses(extracted) {
+  if (extracted.size > 0) {
+    const currentDir = path.dirname(__filename);
+    fs.writeFileSync(
+      path.resolve(currentDir, "../atomic-variants.css"),
+      `@source inline("${Array.from(extracted).join(" ")}");`
+    );
+  }
+}
+
+module.exports = atomicVariants;
