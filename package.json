@@ -1,25 +1,21 @@
 {
-  "name": "atomic-variants-monorepo",
-  "version": "0.0.0",
-  "private": true,
+  "name": "atomic-variants",
+  "version": "0.2.2",
+  "description": "A utility for creating type-safe Tailwind CSS variants.",
+  "keywords": ["tailwindcss", "variants", "responsive", "type-safe"],
   "license": "MIT",
   "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "build": "nx run-many --target=build",
-    "build:git": "nx run-many --target=build --exclude=next,vite-example && git add -f packages/*/dist packages/swc-plugin/*.wasm",
-    "postinstall": "node -e \"\" || true",
-    "prepare": "husky || true",
-    "sort-package": "bunx sort-package-json 'package.json' 'packages/*/package.json'"
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
   },
-  "devDependencies": {
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
-    "@commitlint/types": "^20.2.0",
-    "@nx/js": "^22.3.3",
-    "husky": "^9.1.7",
-    "nx": "^22.3.3"
-  }
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["src", "dist"]
 }
