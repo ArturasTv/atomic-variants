@@ -29,6 +29,7 @@ export default class AtomicVariantsPlugin {
           if (source && typeof source.source === "function") {
             const sourceCode = String(source.source());
 
+            ATOMIC_REGEX.lastIndex = 0;
             const match = ATOMIC_REGEX.exec(sourceCode);
             if (match) {
               this.extractedClasses.add((match?.[1] || "").trim());

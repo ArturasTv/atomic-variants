@@ -43,6 +43,7 @@ export default function atomicVariants(): Plugin {
         },
       });
 
+      ATOMIC_REGEX.lastIndex = 0;
       const match = ATOMIC_REGEX.exec(result.code);
       if (match) {
         extracted.add((match?.[1] || "").trim());
