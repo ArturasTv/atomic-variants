@@ -52,7 +52,7 @@
     "@atomic-variants/constants": "file:../constants",
     "@types/bun": "latest",
     "@types/jest": "^30.0.0",
-    "next": "catalog:",
+    "next": "^16.0.10",
     "tsdown": "^0.15.7",
     "typescript": "^5",
     "webpack": "^5.102.1"

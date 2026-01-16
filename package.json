@@ -4,26 +4,14 @@
   "private": true,
   "license": "MIT",
   "author": "Burak Emre Görmek <burak.gormek@gmail.com>",
-  "workspaces": {
-    "packages": [
-      "examples/*",
-      "packages/*"
-    ],
-    "catalog": {
-      "@types/react": "19.2.5",
-      "@types/react-dom": "19.2.3",
-      "next": "16.0.10",
-      "react": "19.2.0",
-      "react-dom": "19.2.0",
-      "tailwindcss": "4.1.18",
-      "vite": "7.3.0"
-    }
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "nx run-many --target=build",
     "build:git": "nx run-many --target=build --exclude=next,vite-example && git add -f packages/*/dist packages/swc-plugin/*.wasm",
-    "postinstall": "bun fix-comma-lock",
-    "prepare": "husky",
+    "postinstall": "node -e \"\" || true",
+    "prepare": "husky || true",
     "sort-package": "bunx sort-package-json 'package.json' 'packages/*/package.json'"
   },
   "devDependencies": {
