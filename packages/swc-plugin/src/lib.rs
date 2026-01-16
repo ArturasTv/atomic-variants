@@ -57,7 +57,7 @@ impl VisitMut for AtomicVariantsCollector {
                                                                                 if let PropOrSpread::Prop(p2) = pair {
                                                                                     if let Prop::KeyValue(kv2) = &**p2 {
                                                                                         if let Expr::Lit(Lit::Str(s)) = &*kv2.value {
-                                                                                            values.push(s.value.to_string());
+                                                                                            values.push(s.value.as_str().unwrap_or("").to_string());
                                                                                         }
                                                                                     }
                                                                                 }
@@ -89,7 +89,7 @@ impl VisitMut for AtomicVariantsCollector {
                                                                         &**expr
                                                                     {
                                                                         props.push(
-                                                                            s.value.to_string(),
+                                                                            s.value.as_str().unwrap_or("").to_string(),
                                                                         );
                                                                     }
                                                                 }
@@ -119,7 +119,7 @@ impl VisitMut for AtomicVariantsCollector {
                                                                 if let Expr::Lit(Lit::Str(s)) =
                                                                     &**expr
                                                                 {
-                                                                    sizes.push(s.value.to_string());
+                                                                    sizes.push(s.value.as_str().unwrap_or("").to_string());
                                                                 }
                                                             }
                                                         }
