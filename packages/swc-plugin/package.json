@@ -19,8 +19,8 @@
     "release": "bun publish --dry-run",
     "test": "cargo test"
   },
-  "preferUnplugged": true,
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "preferUnplugged": true
 }
