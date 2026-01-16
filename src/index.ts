@@ -1,12 +1,10 @@
 import { transform } from "@swc/core";
 import fs from "fs";
 import type { Plugin } from "vite";
-import { ATOMIC_REGEX, ATOMIC_TAG } from "@atomic-variants/constants";
+const ATOMIC_TAG = "__atomic_generated";
+const ATOMIC_REGEX = new RegExp(`/\\*\\s*${ATOMIC_TAG}:([^*]+)\\s*\\*/`, "g");
 import path from "path";
 import { fileURLToPath } from "url";
-import { createRequire } from "module";
-
-const resolve = createRequire(import.meta.url).resolve;
 
 export default function atomicVariants(): Plugin {
   const extracted = new Set<string>();
@@ -36,7 +34,7 @@ export default function atomicVariants(): Plugin {
           target: "es2022",
           experimental: {
             plugins: [
-              [resolve("@atomic-variants/swc-plugin"), { tag: ATOMIC_TAG }],
+              [path.join(path.dirname(fileURLToPath(import.meta.url)), "../swc-plugin/swc_plugin_atomic_variants.wasm"), { tag: ATOMIC_TAG }],
             ],
             cacheRoot: path.join(viteCacheRoot ?? "node_modules/.vite", ".swc"),
           },
